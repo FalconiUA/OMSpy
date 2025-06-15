@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://omspy.tech/schema/technology/bess.json",
+  "title": "Battery Energy Storage System Schema",
+  "description": "JSON Schema for a BESS with economic, operational, and degradation parameters. Financial settings are defined globally in project_config.json; lifetime_years may be overridden per-technology.",
+  "type": "object",
+  "additionalProperties": false,
+
+  "properties": {
+    "$schema": {"type":"string","format":"uri","description":"Meta: URI to this JSON schema"},
+    "$id": {"type":"string","format":"uri","description":"Meta: unique schema identifier"},
+
+    "id": {"type":"string","pattern":"^[A-Za-z0-9_-]+$","description":"Unique system identifier"},
+    "name": {"type":"string","description":"Human-readable name (reports, UI)"},
+
+    "energy_nominal_kwh": {"type":"number","exclusiveMinimum":0,"description":"Nominal energy capacity, kWh"},
+    "power_nominal_kw": {"type":"number","exclusiveMinimum":0,"description":"Nominal charge/discharge power, kW"},
+
+    "soc_min_pct": {"type":"number","minimum":0,"maximum":100,"default":10,"description":"Minimum allowable state of charge, %"},
+    "soc_max_pct": {"type":"number","minimum":1,"maximum":100,"default":90,"description":"Maximum allowable state of charge, %"},
+    "initial_soc_pct": {"type":"number","minimum":0,"maximum":100,"default":50,"description":"Initial state of charge, %"},
+
+    "roundtrip_efficiency_pct": {"type":"number","minimum":50,"maximum":100,"default":90,"description":"Round-trip efficiency, %"},
+    "charge_efficiency_pct": {"type":"number","minimum":50,"maximum":100,"description":"Charge efficiency, % (overrides roundtrip)"},
+    "discharge_efficiency_pct": {"type":"number","minimum":50,"maximum":100,"description":"Discharge efficiency, % (overrides roundtrip)"},
+
+    "cycle_life": {"type":"integer","minimum":1,"description":"Number of full cycles until capacity reaches 80%"},
+
+    "degradation": {
+      "type": "object",
+      "description": "Degradation configuration",
+      "oneOf": [
+        {
+          "properties": {
+            "type": {"const": "default"}
+          },
+          "required": ["type"]
+        },
+        {
+          "properties": {
+            "type": {"const": "fixed"},
+            "first_year_degradation_pct": {"type":"number","minimum":0,"maximum":100,"description":"First-year degradation rate, %"},
+            "avg_degradation_pct_after_first_year": {"type":"number","minimum":0,"maximum":100,"description":"Average degradation rate after first year, %"}
+          },
+          "required": ["type","first_year_degradation_pct","avg_degradation_pct_after_first_year"]
+        },
+        {
+          "properties": {
+            "type": {"const": "custom"},
+            "degradation_pct_per_year": {
+              "type": "array",
+              "items": {"type":"number","minimum":0,"maximum":100},
+              "minItems": 1,
+              "description": "Custom degradation per year, %"
+            }
+          },
+          "required": ["type","degradation_pct_per_year"]
+        }
+      ]
+    },
+
+    "installation_cost": {"type":"number","minimum":0,"description":"CAPEX for BESS (project currency)"},
+    "om_cost_per_year": {"type":"number","minimum":0,"description":"Annual O&M cost (project currency per year)"},
+    "lifetime_years": {"type":"integer","minimum":1,"description":"Service life in years (overrides project default)"}
+  },
+
+  "required": ["id","energy_nominal_kwh","power_nominal_kw"]
+}

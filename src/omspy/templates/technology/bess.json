@@ -1,0 +1,25 @@
+{
+  "$schema": "./../../json_schemas/technology/bess.json",
+  "id": "bess_1",
+  "name": "215-2S10",
+  "energy_nominal_kwh": 215,
+  "power_nominal_kw": 100,
+
+  "soc_min_pct": 0,
+  "soc_max_pct": 100,
+  "initial_soc_pct": 50,
+
+  "roundtrip_efficiency_pct": 91,
+
+  "cycle_life": 6000,
+
+  "degradation": {
+    "type": "fixed",
+    "first_year_degradation_pct": 2,
+    "avg_degradation_pct_after_first_year": 2.5
+  },
+
+  "installation_cost": 120000,
+  "om_cost_per_year": 3000,
+  "lifetime_years": 15
+}

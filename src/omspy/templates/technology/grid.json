@@ -1,0 +1,17 @@
+{
+  "$schema": "./../../json_schemas/technology/grid.json",
+  "id": "grid_main",
+  "name": "Grid #1",
+
+  "max_import_kw": 1500,
+  "max_export_kw": 500,
+
+  "tariff_import_profile": "data/tariffs/day_ahead_market_price.csv",
+  "tariff_export_profile": "data/tariffs/feed_in_price.csv",
+
+  "is_islanding_allowed": false,
+
+  "installation_cost": 20000,
+  "om_cost_per_year": 1000,
+  "lifetime_years": 40
+}
