@@ -1,0 +1,2 @@
+[tool.setuptools.package-data]
+"omspy.json_schemas.technology" = ["*.json"]

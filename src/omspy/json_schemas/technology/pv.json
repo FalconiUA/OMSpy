@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://omspy.tech/schema/technology/pv.json",
+  "title": "Photovoltaic System Schema",
+  "description": "JSON Schema for a PV installation with economic parameters. Allows meta-properties in instances. Financial settings (currency, fixed charge rate, project default lifetime) are defined globally in project_config.json, but lifetime_years may be overridden per-technology.",
+  "type": "object",
+  "additionalProperties": false,
+
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri",
+      "description": "Meta: path or URI to this JSON schema (ignored during data validation)"
+    },
+    "$id": {
+      "type": "string",
+      "format": "uri",
+      "description": "Meta: unique identifier of schema (ignored during data validation)"
+    },
+
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$",
+      "description": "Unique system identifier"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name (for reports, UI)"
+    },
+
+    "dc_power_kw": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Nominal DC power, kW"
+    },
+    "ac_power_kw": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Nominal AC power, kW (alternative to dc_power_kw)"
+    },
+
+    "degradation_pct_per_year": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10,
+      "description": "Annual degradation, %"
+    },
+
+    "energy_profile": {
+      "type": "string",
+      "format": "uri",
+      "description": "Path or URI to CSV/JSON of generation profile (0–1)"
+    },
+
+    "installation_cost_per_kw": {
+      "type": "number",
+      "minimum": 0,
+      "description": "CAPEX per kW (in the project currency)"
+    },
+    "total_cost": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total CAPEX (alternative to installation_cost_per_kw)"
+    },
+
+    "om_cost_per_kw_per_year": {
+      "type": "number",
+      "minimum": 0,
+      "description": "OPEX per kW·year (in the project currency)"
+    },
+
+    "lifetime_years": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Service life of this technology in years (overrides project default lifetime)"
+    },
+
+    "lcoe_override_per_kwh": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Optional user-defined LCOE, per kWh (in the project currency)"
+    }
+  },
+
+  "allOf": [
+    {
+      "oneOf": [
+        { "required": ["dc_power_kw"] },
+        { "required": ["ac_power_kw"] }
+      ]
+    },
+    {
+      "oneOf": [
+        { "required": ["installation_cost_per_kw"] },
+        { "required": ["total_cost"] }
+      ]
+    }
+  ],
+
+  "required": ["id", "om_cost_per_kw_per_year"]
+}

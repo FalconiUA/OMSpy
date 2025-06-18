@@ -1,0 +1,66 @@
+# Virtual environments
+.venv/
+env/
+venv/
+__pypackages__/
+
+# Python bytecode and caches
+*.pyc
+*.pyo
+__pycache__/
+*.pyd
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# IDEs and editors
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Logs and databases
+*.log
+*.sqlite3
+*.db
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Coverage
+htmlcov/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.cov
+
+# Jupyter
+.ipynb_checkpoints/
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# PyTest
+.pytest_cache/
+
+# Project-specific
+user_projects/**/data_tables/*.csv
+user_projects/**/data_tables/*.parquet
+
+# Templates / generated configs (если нужно игнорировать промежуточные)
+# src/omspy/templates/technology/*.json
+
+# Secrets (если у вас есть секреты-файли)
+secrets.yaml
+.env
+

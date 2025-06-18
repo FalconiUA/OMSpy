@@ -1,0 +1,16 @@
+{
+  "$schema": "./../../json_schemas/technology/pv.json",
+  "id": "pv_roof_east",
+  "name": "Східна покрівля",
+  "dc_power_kw": 120,
+
+  "degradation_pct_per_year": 0.5,
+  "energy_profile": "data/profiles/pv_roof_east_generation.csv",
+
+  "total_cost": 84000,
+
+  "om_cost_per_kw_per_year": 15,
+  "lifetime_years": 25,
+
+  "lcoe_override_per_kwh": 0.08
+}

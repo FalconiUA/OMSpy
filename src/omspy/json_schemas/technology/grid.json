@@ -1,0 +1,83 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://omspy.tech/schema/technology/grid.json",
+  "title": "Grid Connection Schema",
+  "description": "JSON Schema for a utility grid connection with economic parameters. Financial settings (currency, fixed charge rate, project default lifetime) are defined globally in project_config.json, but lifetime_years may be overridden per-technology.",
+  "type": "object",
+  "additionalProperties": false,
+
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri",
+      "description": "Meta: path or URI to this JSON schema (ignored during data validation)"
+    },
+    "$id": {
+      "type": "string",
+      "format": "uri",
+      "description": "Meta: unique identifier of schema (ignored during data validation)"
+    },
+
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$",
+      "description": "Unique system identifier"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name (for reports, UI)"
+    },
+
+    "max_import_kw": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Maximum import capacity, kW"
+    },
+    "max_export_kw": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Maximum export capacity, kW (0 if not allowed)"
+    },
+
+    "is_islanding_allowed": {
+      "type": "boolean",
+      "description": "Whether the site can operate islanded (true) or must shut down when grid is absent (false)"
+    },
+
+    "is_energy_export_allowed": {
+      "type": "boolean",
+      "description": "Whether the site can operate export energy (true) or no (false)"
+    },
+
+    "tariff_import_profile": {
+      "type": "string",
+      "format": "uri",
+      "description": "URI or path to CSV/JSON hourly import tariff profile (currency per kWh)"
+    },
+    "tariff_export_profile": {
+      "type": "string",
+      "format": "uri",
+      "description": "URI or path to CSV/JSON hourly export tariff profile (currency per kWh). May be omitted if export is not allowed"
+    },
+
+    "installation_cost": {
+      "type": "number",
+      "minimum": 0,
+      "description": "CAPEX for grid interconnection (in project currency). If omitted, assumed zero."
+    },
+
+    "om_cost_per_year": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Annual fixed O&M cost for the interconnection (project currency per year)"
+    },
+
+    "lifetime_years": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Service life of this grid asset in years (overrides project default)"
+    }
+  },
+
+  "required": ["id", "max_import_kw", "tariff_import_profile"]
+}
