@@ -11,6 +11,11 @@
     "$id": {"type":"string","format":"uri","description":"Meta: unique schema identifier"},
 
     "id": {"type":"string","pattern":"^[A-Za-z0-9_-]+$","description":"Unique system identifier"},
+    "type": {
+      "type": "string",
+      "const": "bess",
+      "description": "Technology type - must be 'bess'"
+    },
     "name": {"type":"string","description":"Human-readable name (reports, UI)"},
 
     "energy_nominal_kwh": {"type":"number","exclusiveMinimum":0,"description":"Nominal energy capacity, kWh"},
@@ -64,5 +69,5 @@
     "lifetime_years": {"type":"integer","minimum":1,"description":"Service life in years (overrides project default)"}
   },
 
-  "required": ["id","energy_nominal_kwh","power_nominal_kw"]
+  "required": ["id", "type", "energy_nominal_kwh", "power_nominal_kw"]
 }

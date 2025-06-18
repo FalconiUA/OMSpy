@@ -1,0 +1,38 @@
+{
+  "optimization_type": "capacity_expansion",
+
+  "temporal": {
+    "time_horizon": "year_ahead",
+    "resolution": "1h"
+  },
+
+  "economic": {
+    "discount_rate": 0.05,
+    "currency": "USD",
+    "social_discount_rate": 0.02
+  },
+
+  "solver": {
+    "name": "highs",
+    "options": "default",
+    "custom_options": {
+      "time_limit": 3600,
+      "mip_gap": 0.01,
+      "threads": 4
+    }
+  },
+
+  "options": {
+    "unit_commitment": false,
+    "transmission_losses": false,
+    "rolling_horizon": false,
+    "load_shedding": false
+  },
+
+  "outputs": {
+    "save_hourly_dispatch": true,
+    "save_capacity_results": true,
+    "save_economics": true,
+    "save_emissions": true
+  }
+}

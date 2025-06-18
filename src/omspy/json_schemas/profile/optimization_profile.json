@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://omspy.tech/schema/profile/optimization_profile.json",
+  "title": "Optimization Profile Schema",
+  "description": "Schema for optimization parameters",
+  "type": "object",
+  "additionalProperties": false,
+
+  "properties": {
+    "$schema": {"type": "string", "format": "uri"},
+    "$id": {"type": "string", "format": "uri"},
+
+    "optimization_type": {
+      "type": "string",
+      "enum": ["capacity_expansion", "operational_dispatch", "full_optimization"],
+      "default": "capacity_expansion"
+    },
+
+    "temporal": {
+      "type": "object",
+      "properties": {
+        "time_horizon": {
+          "type": "string",
+          "enum": ["day_ahead", "week_ahead", "month_ahead", "year_ahead", "multi_year"],
+          "default": "year_ahead"
+        },
+        "resolution": {
+          "type": "string",
+          "enum": ["15min", "30min", "1h", "3h", "6h", "24h"],
+          "default": "1h"
+        }
+      },
+      "required": ["time_horizon", "resolution"]
+    },
+
+    "solver": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "enum": ["highs", "gurobi", "cplex", "glpk", "cbc"],
+          "default": "highs"
+        },
+        "custom_options": {
+          "type": "object",
+          "properties": {
+            "time_limit": {"type": "integer", "minimum": 1, "default": 3600},
+            "mip_gap": {"type": "number", "minimum": 0, "maximum": 1, "default": 0.01}
+          }
+        }
+      },
+      "required": ["name"]
+    }
+  },
+
+  "required": ["optimization_type", "temporal", "solver"]
+}

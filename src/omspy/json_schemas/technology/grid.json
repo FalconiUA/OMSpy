@@ -23,6 +23,11 @@
       "pattern": "^[A-Za-z0-9_-]+$",
       "description": "Unique system identifier"
     },
+    "type": {
+      "type": "string",
+      "const": "grid",
+      "description": "Technology type - must be 'grid'"
+    },
     "name": {
       "type": "string",
       "description": "Human-readable name (for reports, UI)"
@@ -79,5 +84,5 @@
     }
   },
 
-  "required": ["id", "max_import_kw", "tariff_import_profile"]
+  "required": ["id", "type", "max_import_kw", "tariff_import_profile"]
 }

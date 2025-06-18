@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://omspy.tech/schema/scenario/max_self_consumption.json",
+  "title": "Max Self-Consumption Scenario",
+  "description": "Schema for maximizing energy self-consumption",
+  "type": "object",
+  "additionalProperties": false,
+
+  "allOf": [
+    {"$ref": "base.json"},
+    {
+      "properties": {
+        "type": {"const": "max_self_consumption"},
+
+        "self_consumption_config": {
+          "type": "object",
+          "properties": {
+            "target_percentage": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100,
+              "default": 80,
+              "description": "Target self-consumption percentage"
+            },
+            "priority_order": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["direct_consumption", "battery_charge", "grid_export", "battery_discharge", "grid_import"]
+              },
+              "uniqueItems": true,
+              "default": ["direct_consumption", "battery_charge", "battery_discharge", "grid_export", "grid_import"],
+              "description": "Energy flow priority order"
+            },
+            "battery_strategy": {
+              "type": "object",
+              "properties": {
+                "charge_from_surplus": {"type": "boolean", "default": true},
+                "discharge_to_load": {"type": "boolean", "default": true},
+                "avoid_grid_charging": {"type": "boolean", "default": true},
+                "min_soc_reserve_pct": {"type": "number", "minimum": 0, "maximum": 100, "default": 20}
+              }
+            }
+          }
+        },
+
+        "constraints": {
+          "type": "object",
+          "properties": {
+            "min_self_consumption_pct": {"type": "number", "minimum": 0, "maximum": 100},
+            "max_grid_dependency_pct": {"type": "number", "minimum": 0, "maximum": 100},
+            "backup_autonomy_hours": {"type": "number", "minimum": 0}
+          }
+        }
+      }
+    }
+  ]
+}

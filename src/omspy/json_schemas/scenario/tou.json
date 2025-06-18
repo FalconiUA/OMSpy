@@ -1,0 +1,126 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://omspy.tech/schema/scenario/time_of_use.json",
+  "title": "Time-of-Use Scenario",
+  "description": "Schema for optimizing based on time-of-use electricity tariffs",
+  "type": "object",
+  "additionalProperties": false,
+
+  "allOf": [
+    {"$ref": "base.json"},
+    {
+      "properties": {
+        "type": {"const": "time_of_use"},
+
+        "tariff_periods": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Period name (e.g., 'peak', 'off-peak', 'mid-peak')"
+              },
+              "time_ranges": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]-([0-1]?[0-9]|2[0-3]):[0-5][0-9]$",
+                  "description": "Time range in HH:MM-HH:MM format"
+                }
+              },
+              "days": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+                },
+                "default": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+              },
+              "strategy": {
+                "type": "string",
+                "enum": ["avoid_import", "maximize_export", "charge_battery", "discharge_battery", "normal_operation"],
+                "description": "Strategy for this period"
+              },
+              "import_price_multiplier": {
+                "type": "number",
+                "minimum": 0,
+                "default": 1.0,
+                "description": "Multiplier for import price during this period"
+              },
+              "export_price_multiplier": {
+                "type": "number",
+                "minimum": 0,
+                "default": 1.0,
+                "description": "Multiplier for export price during this period"
+              }
+            },
+            "required": ["name", "time_ranges", "strategy"]
+          }
+        },
+
+        "optimization_priorities": {
+          "type": "object",
+          "properties": {
+            "peak_hours": {
+              "type": "object",
+              "properties": {
+                "minimize_grid_import": {"type": "boolean", "default": true},
+                "use_battery_first": {"type": "boolean", "default": true},
+                "export_surplus": {"type": "boolean", "default": false}
+              }
+            },
+            "off_peak_hours": {
+              "type": "object",
+              "properties": {
+                "charge_battery_from_grid": {"type": "boolean", "default": true},
+                "max_grid_import_kw": {"type": "number", "minimum": 0},
+                "target_soc_pct": {"type": "number", "minimum": 0, "maximum": 100, "default": 90}
+              }
+            },
+            "mid_peak_hours": {
+              "type": "object",
+              "properties": {
+                "balanced_operation": {"type": "boolean", "default": true},
+                "self_consumption_priority": {"type": "boolean", "default": true}
+              }
+            }
+          }
+        },
+
+        "battery_management": {
+          "type": "object",
+          "properties": {
+            "pre_peak_charging": {
+              "type": "object",
+              "properties": {
+                "enabled": {"type": "boolean", "default": true},
+                "start_hours_before_peak": {"type": "number", "minimum": 0, "maximum": 12, "default": 2},
+                "target_soc_pct": {"type": "number", "minimum": 0, "maximum": 100, "default": 90}
+              }
+            },
+            "peak_discharge_limits": {
+              "type": "object",
+              "properties": {
+                "max_discharge_rate_pct": {"type": "number", "minimum": 0, "maximum": 100, "default": 100},
+                "reserve_for_backup_pct": {"type": "number", "minimum": 0, "maximum": 100, "default": 20}
+              }
+            }
+          }
+        },
+
+        "constraints": {
+          "type": "object",
+          "properties": {
+            "max_peak_import_kw": {"type": "number", "minimum": 0},
+            "max_daily_grid_import_kwh": {"type": "number", "minimum": 0},
+            "min_export_during_peak": {"type": "boolean", "default": false},
+            "backup_requirement_hours": {"type": "number", "minimum": 0}
+          }
+        }
+      },
+      "required": ["tariff_periods"]
+    }
+  ]
+}

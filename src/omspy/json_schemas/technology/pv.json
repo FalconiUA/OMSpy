@@ -23,6 +23,11 @@
       "pattern": "^[A-Za-z0-9_-]+$",
       "description": "Unique system identifier"
     },
+    "type": {
+      "type": "string",
+      "const": "pv",
+      "description": "Technology type - must be 'pv'"
+    },
     "name": {
       "type": "string",
       "description": "Human-readable name (for reports, UI)"
@@ -97,5 +102,5 @@
     }
   ],
 
-  "required": ["id", "om_cost_per_kw_per_year"]
+  "required": ["id", "type", "om_cost_per_kw_per_year"]
 }

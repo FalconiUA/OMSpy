@@ -1,0 +1,24 @@
+{
+  "name": "Residential Max Self-Consumption",
+  "description": "Optimize PV and battery sizes for maximum self-consumption in residential building",
+  "optimization_goal": "max_self_consumption",
+
+  "technologies": ["pv_rooftop", "battery_storage", "grid_connection"],
+
+  "data_files": {
+    "load_profile": "demand_electricity.csv",
+    "generation_profiles": {
+      "pv_rooftop": "pv_generation.csv"
+    },
+    "price_profiles": {
+      "import_prices": "day_ahead_market_price.csv",
+      "export_prices": "day_ahead_market_price.csv"
+    }
+  },
+
+  "constraints": {
+    "max_grid_import_kw": 400,
+    "min_self_consumption_pct": 70,
+    "backup_duration_hours": 4
+  }
+}
