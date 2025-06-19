@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Base Scenario Schema",
+  "type": "object",
+
+  "properties": {
+    "name":          { "type": "string" },
+    "type":          { "$ref": "#/$defs/scenarioType" },
+    "technologies":  {
+      "type":  "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "data_sources":  {
+      "type": "object",
+      "properties": {
+        "load_profile": { "type": "string", "format": "uri-reference" }
+      },
+      "required": ["load_profile"],
+      "additionalProperties": false
+    }
+  },
+
+  "required": ["name", "type", "technologies", "data_sources"],
+
+  "$defs": {
+    "scenarioType": {
+      "type": "string",
+      "enum": [
+        "base",
+        "max_self_consumption",
+        "time_of_use"
+      ]
+    }
+  },
+
+
+  "unevaluatedProperties": false
+}

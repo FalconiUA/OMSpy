@@ -1,1 +1,0 @@
-from omspy.core.user_project_loader import load_user_project
